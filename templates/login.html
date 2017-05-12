@@ -1,0 +1,29 @@
+{{define "body"}}
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-4 col-sm-3 col-xs-1"></div>
+     <div class="col-md-4 col-sm-6 col-xs-10">
+     <form class="form-signin" method="POST" action="/login">
+        <h2 class="form-signin-heading">Lütfen giriş yapın.</h2>
+        {{if .errorMessage}}
+        <div class="alert alert-danger">
+          <strong>Hata!</strong> {{.errorMessage}}
+        </div>
+        {{end}}
+        <label for="email" class="sr-only">Email address</label>
+        <input type="email" id="email" name="email" class="form-control" placeholder="Email addresi" required autofocus>
+        <br>
+        <label for="password" class="sr-only">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Şifre" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me" name="remeber-me" checked="checked"> Beni hatırla
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Giriş</button>
+      </form>
+     </div>
+     <div class="col-md-4 col-sm-3 col-xs-1"></div>
+</div>
+</div>
+{{end}}
