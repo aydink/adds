@@ -21,8 +21,6 @@ type User struct {
 // yok ise boş bir kullanıcı ve hata döndürür.
 func LoginUser(email, password string) (User, bool) {
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
 	stmt, err := db.Prepare("SELECT id, username, password, email, token FROM users WHERE email=?")
 	if err != nil {
 		fmt.Println(err)
@@ -37,7 +35,7 @@ func LoginUser(email, password string) (User, bool) {
 		fmt.Println(err)
 	}
 
-	if bcrypt.CompareHashAndPassword(hashedPassword, user.Password) == nil {
+	if bcrypt.CompareHashAndPassword(user.Password, []byte(password)) == nil {
 		return user, true
 	} else {
 		return user, false
@@ -48,14 +46,14 @@ func LoginUser(email, password string) (User, bool) {
 // yok ise boş bir kullanıcı ve hata döndürür.
 func CreateUser(user User) error {
 
-	hashedPassword, err := bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
+	hash, err := bcrypt.GenerateFromPassword(user.Password, bcrypt.DefaultCost)
 
 	stmt, err := db.Prepare("INSERT INTO users (username, password, email, token) VALUES (?, ?, ? ,?)")
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	res, err := stmt.Exec(user.Username, hashedPassword, user.Email, user.Token)
+	res, err := stmt.Exec(user.Username, hash, user.Email, user.Token)
 	if err != nil {
 		fmt.Println(err)
 	}

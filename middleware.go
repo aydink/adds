@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 func UserMiddleware(c *gin.Context) {
-	fmt.Println("Im a dummy!")
+	//fmt.Println("Im a dummy!")
 
 	sid, _ := c.Cookie("sid")
 

@@ -8,6 +8,8 @@ import (
 
 	"net/http"
 
+	"log"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +18,7 @@ var sessionStore *SessionStore
 
 func main() {
 	var err error
-	db, err = sql.Open("mysql", "root:sanane@/adds")
+	db, err = sql.Open("mysql", "root:sanane@/adds?parseTime=true")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -29,7 +31,9 @@ func main() {
 	router.GET("/", func(c *gin.Context) {
 
 		data := c.MustGet("data").(map[string]interface{})
+
 		data["adds"] = AddList()
+		log.Printf("session:%+v", data["session"])
 
 		renderTemplate(c.Writer, "index.html", data)
 	})

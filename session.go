@@ -61,7 +61,7 @@ func (ss *SessionStore) GC() {
 type Session struct {
 	sync.Mutex
 	sid          string // unique session id
-	user         User
+	SessionUser  User
 	timeCreated  time.Time                   // last access time
 	timeAccessed time.Time                   // last access time
 	value        map[interface{}]interface{} // session value stored inside
@@ -79,7 +79,7 @@ func (s *Session) Update() {
 func NewSession(user User, value map[interface{}]interface{}) *Session {
 	s := &Session{}
 	s.sid = createSessionId()
-	s.user = user
+	s.SessionUser = user
 	s.timeCreated = time.Now()
 	s.value = value
 	s.isNew = true
