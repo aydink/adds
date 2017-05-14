@@ -1,10 +1,6 @@
 package main
 
-import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
-)
+import "github.com/gin-gonic/gin"
 
 func UserMiddleware(c *gin.Context) {
 	//fmt.Println("Im a dummy!")
@@ -17,10 +13,12 @@ func UserMiddleware(c *gin.Context) {
 	data["session"] = session
 	c.Set("data", data)
 
-	sessionStore.Set(session.sid, session)
-	cookie := &http.Cookie{Name: "sid", Value: session.sid}
+	/*
+		sessionStore.Set(session.sid, session)
+		cookie := &http.Cookie{Name: "sid", Value: session.sid}
 
-	http.SetCookie(c.Writer, cookie)
+		http.SetCookie(c.Writer, cookie)
+	*/
 
 	// Pass on to the next-in-chain
 	c.Next()

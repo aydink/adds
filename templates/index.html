@@ -2,7 +2,7 @@
 <div class="container">
 
 {{range .adds}}
-<h3>{{.Title}}</h3>
+<h3><a href="/adds/edit/{{.Id}}">{{.Title}}</a></h3>
 <img src="/static/images/thumb.jpg"/>
 <p>{{.Description}}</p>
 {{end}}

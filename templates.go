@@ -14,6 +14,8 @@ func init() {
 	templates["index.html"] = template.Must(template.ParseFiles("templates/index.html", "templates/nav.html", "templates/base.html"))
 	templates["upload.html"] = template.Must(template.ParseFiles("templates/upload.html", "templates/nav.html", "templates/base.html"))
 	templates["login.html"] = template.Must(template.ParseFiles("templates/login.html", "templates/nav.html", "templates/base.html"))
+	templates["new_edit_add.html"] = template.Must(template.ParseFiles("templates/new_edit_add.html", "templates/nav.html", "templates/base.html"))
+	templates["adds_myadds.html"] = template.Must(template.ParseFiles("templates/adds_myadds.html", "templates/nav.html", "templates/base.html"))
 }
 
 // renderTemplate is a wrapper around template.ExecuteTemplate.

@@ -1,0 +1,64 @@
+{{define "body"}}
+
+{{with .add}}
+<form class="form-horizontal" method="POST" action="/adds/new">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="title">İlan Başlığı:</label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control" id="title" name="title" value="{{.Title}}" placeholder="2012 model Toyota Corrolla Touch 1.6 dizel">
+      {{if $.formErrors.title}}<div class="text-danger">{{$.formErrors.title}}</div>{{end}}
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="description">Açıklama:</label>
+    <div class="col-sm-8"> 
+      <textarea class="form-control" rows="7" id="description" name="description">{{.Description}}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="price">Fiyatı:</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" id="price" name="price" value="{{.Price}}">{{if $.formErrors.price}}<span class="text-danger">{{$.formErrors.price}}</span>{{end}}
+       <div class="checkbox">
+        <label><input type="checkbox" id="negotiable" name="negotiable"{{if .Negotiable}} checked{{end}}> Pazarlık var</label>
+      </div>
+    </div>
+  </div>
+
+
+ <div class="form-group">
+    <label class="control-label col-sm-2" for="category">İlan kategorisi:</label>
+    <div class="col-sm-4"> 
+      <select class="form-control" id="category" name="category">
+        <option value="1"{{if eq .Category 1 }} selected="selected" {{end}}>Mobilya</option>
+        <option value="2"{{if eq .Category 2 }} selected="selected" {{end}}>Oto</option>
+        <option value="3"{{if eq .Category 3 }} selected="selected" {{end}}>Beyaz eşya</option>
+        <option value="4"{{if eq .Category 4 }} selected="selected" {{end}}>Bakıcı/Temizlikçi</option>
+      </select>
+    </div>
+  </div>
+
+ <div class="form-group">
+    <label class="control-label col-sm-2" for="region">Lojman grubu:</label>
+    <div class="col-sm-4"> 
+      <select class="form-control" id="region" name="region">
+        <option value="1"{{if eq .Region 1 }} selected="selected"{{end}}>ORAN</option>
+        <option value="2"{{if eq .Region 2 }} selected="selected"{{end}}>ÇANKAYA</option>
+        <option value="3"{{if eq .Region 3 }} selected="selected"{{end}}>ÇİĞİLTEPE</option>
+        <option value="4"{{if eq .Region 4 }} selected="selected"{{end}}>ÇAĞLAYAN</option>
+        <option value="5"{{if eq .Region 5 }} selected="selected"{{end}}>ERLER MAHALLESİ</option>
+        <option value="6"{{if eq .Region 6 }} selected="selected"{{end}}>ÇAĞLAYAN</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group"> 
+    <div class="col-sm-offset-2 col-sm-8">
+      <button type="submit" class="btn btn-default">Kaydet</button>
+      <input type="hidden" name="id" value="{{.Id}}"/>
+    </div>
+  </div>
+</form>
+{{end}}
+
+{{end}}

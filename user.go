@@ -36,8 +36,10 @@ func LoginUser(email, password string) (User, bool) {
 	}
 
 	if bcrypt.CompareHashAndPassword(user.Password, []byte(password)) == nil {
+		user.Password = []byte("")
 		return user, true
 	} else {
+		user.Password = []byte("")
 		return user, false
 	}
 }
