@@ -49,7 +49,10 @@ func main() {
 			fmt.Println(err)
 		}
 
-		saveFile(file, header)
+		err = saveFile(file, header)
+		if err != nil {
+			fmt.Println(err)
+		}
 
 	})
 
@@ -78,4 +81,6 @@ func main() {
 
 func init() {
 	sessionStore = NewSessionStore()
+
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 }
