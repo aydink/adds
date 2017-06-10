@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -26,9 +27,81 @@ func HandleAddUpdate(c *gin.Context) {
 	renderTemplate(c.Writer, "new_edit_add.html", data)
 }
 
+func HandlePhotoUploadForm(c *gin.Context) {
+	id := c.Params.ByName("id")
+	addId, _ := strconv.Atoi(id)
+
+	data := c.MustGet("data").(map[string]interface{})
+	log.Printf("%+v\n", data["session"])
+
+	add, err := GetAddById(addId)
+	if err != nil {
+		log.Println(err)
+	}
+
+	data["add"] = add
+	renderTemplate(c.Writer, "upload_photo.html", data)
+}
+
+// save uploaded photos for a given add
+func HandlePhotoUpload(c *gin.Context) {
+	data := c.MustGet("data").(map[string]interface{})
+	session := data["session"].(*Session)
+
+	log.Printf("%+v\n", session)
+
+	strAid := c.DefaultPostForm("aid", "0")
+	aid, err := strconv.Atoi(strAid)
+
+	if err != nil {
+		log.Println(err)
+	}
+	log.Println("add id:", aid)
+
+	uid := session.SessionUser.Id
+
+	if session.SessionUser.Loggedin == false {
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	for i := 1; i < 5; i++ {
+		file, header, err := c.Request.FormFile("file" + strconv.Itoa(i))
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			err = saveFile(uid, aid, file, header)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+}
+
+func HandleAddsView(c *gin.Context) {
+	id := c.Params.ByName("id")
+	addId, _ := strconv.Atoi(id)
+
+	data := c.MustGet("data").(map[string]interface{})
+	log.Printf("%+v\n", data["session"])
+
+	add, err := GetAddById(addId)
+	if err != nil {
+		log.Println(err)
+	}
+
+	data["photos"] = GetPhotos(addId)
+	log.Println(data["photos"])
+	data["add"] = add
+	renderTemplate(c.Writer, "adds_view.html", data)
+}
+
 func registerAddHandlers() {
 
 	router.GET("/adds/edit/:id", HandleAddUpdate)
+	router.GET("/adds/addphoto/:id", HandlePhotoUploadForm)
+	router.POST("/adds/addphoto", HandlePhotoUpload)
+	router.GET("/adds/view/:id", HandleAddsView)
 
 	router.GET("/adds/new", func(c *gin.Context) {
 		data := c.MustGet("data").(map[string]interface{})

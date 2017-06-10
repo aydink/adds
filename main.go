@@ -49,7 +49,7 @@ func main() {
 			fmt.Println(err)
 		}
 
-		err = saveFile(file, header)
+		err = saveFile(1, 1, file, header)
 		if err != nil {
 			fmt.Println(err)
 		}

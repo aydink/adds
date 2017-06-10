@@ -11,7 +11,7 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func saveFile(file multipart.File, header *multipart.FileHeader) error {
+func saveFile(uid int, aid int, file multipart.File, header *multipart.FileHeader) error {
 	filename := header.Filename
 	//fmt.Println(header.Filename)
 
@@ -56,8 +56,8 @@ func saveFile(file multipart.File, header *multipart.FileHeader) error {
 		return err
 	}
 
-	AddPhoto(1, 1, destinationFileName)
-	SetScreenPhoto(1, 1, destinationFileName)
+	AddPhoto(uid, aid, destinationFileName)
+	SetScreenPhoto(uid, aid, destinationFileName)
 
 	return nil
 }
@@ -107,5 +107,48 @@ func SetScreenPhoto(uid int, aid int, filename string) error {
 		return err
 	}
 
+	// update image field on adds table
+	// we use this image field to display defaut image for the add
+	// without the need for a table join operation
+	// firt set screen=0 for every photo, none is default
+	stmt, err = db.Prepare("UPDATE adds SET image = ? WHERE uid=? AND id=?")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	_, err = stmt.Exec(filename, uid, aid)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
 	return nil
+}
+
+func GetPhotos(aid int) []string {
+	stmt, err := db.Prepare("SELECT filename FROM photos WHERE aid = ?")
+	if err != nil {
+		log.Println(err)
+	}
+
+	rows, err := stmt.Query(aid)
+	if err != nil {
+		log.Println(err)
+	}
+
+	photos := make([]string, 0)
+
+	for rows.Next() {
+		var filename string
+
+		err = rows.Scan(&filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		photos = append(photos, filename)
+	}
+
+	return photos
 }

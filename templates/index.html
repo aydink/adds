@@ -2,9 +2,20 @@
 <div class="container">
 
 {{range .adds}}
-<h3><a href="/adds/edit/{{.Id}}">{{.Title}}</a></h3>
-<img src="/static/images/thumb.jpg"/>
-<p>{{.Description}}</p>
+<div class="row">
+    <div class="col-sm-8">
+        <h3><a href="/adds/view/{{.Id}}">{{.Title}}</a></h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2">
+        <img src="/static/thumb/{{path .Image}}/{{.Image}}.jpg" width="150px"/>
+    </div>
+    <div class="col-sm-8">
+        <p>{{.Description | newline}}</p>
+    </div>
+</div>
+
 {{end}}
 
 </div>

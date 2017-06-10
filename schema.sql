@@ -37,6 +37,16 @@ CREATE TABLE users (
 	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE IF EXISTS messages;
+CREATE TABLE messages (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	aid INT NOT NULL,
+	uid_from INT NOT NULL,
+	uid_to INT NOT NULL,
+	message VARCHAR(255) NOT NULL,
+	created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	seen TIMESTAMP DEFAULT '2000-01-01 00:00:00' ON UPDATE CURRENT_TIMESTAMP
+);
 
 INSERT INTO adds (uid, title, description, price, category, region, negotiable) VALUES
 (1, "20 jant Bianchi çocuk bisikleti", "Çok iyi durumda, temiz kullanılmış, herhangi bir sorunu yok, lastikleri geçen yıl değişti", 50, 1, 1, 1),

@@ -52,6 +52,24 @@
     </div>
   </div>
 
+ <div class="form-group">
+    <label class="control-label col-sm-2" for="region">İlan fotografları:</label>
+    <div class="col-sm-4"> 
+      <input type="file" class="upload" id="file1" name="file1"/> 
+      <input type="file" class="upload" id="file2" name="file2"/> 
+      <input type="file" class="upload" id="file3" name="file3"/> 
+      <input type="file" class="upload" id="file4" name="file4"/> 
+      <input type="file" class="upload" id="file5" name="file5"/> 
+      <div id="preview">
+        <img style="display:none;" id="image_file1" height="150"/>
+        <img style="display:none;" id="image_file2" height="150"/>
+        <img style="display:none;" id="image_file3" height="150"/>
+        <img style="display:none;" id="image_file4" height="150"/>
+        <img style="display:none;" id="image_file5" height="150"/>
+      </div>
+    </div>
+  </div>
+
   <div class="form-group"> 
     <div class="col-sm-offset-2 col-sm-8">
       <button type="submit" class="btn btn-default">Kaydet</button>
@@ -60,5 +78,32 @@
   </div>
 </form>
 {{end}}
+
+{{end}}
+
+{{define "scripts"}}
+<script>
+var photos = [];
+
+ function readURL(input_source) {
+   console.log(input_source);
+
+   input = input_source.target;
+
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('#image_'+input.id).attr('src', e.target.result);
+        //$("#test").css("display", "block");
+        $('#image_'+input.id).css({ "display": "block", "float": "left" });
+
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+$('.upload').on("change", readURL);
+
+</script>
 
 {{end}}

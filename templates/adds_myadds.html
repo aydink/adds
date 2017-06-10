@@ -2,8 +2,9 @@
 <div class="container">
 
 {{range .adds}}
-<h3><a href="/adds/edit/{{.Id}}">{{.Title}}</a></h3>
-<img src="/static/images/thumb.jpg"/>
+<h3><a href="/adds/addphoto/{{.Id}}">{{.Title}}</a></h3>
+<img src="/static/thumb/{{path .Image}}/{{.Image}}.jpg"/>
+<a href="/adds/edit/{{.Id}}">Düzenle</a>
 <p>{{.Description}}</p>
 {{end}}
 
