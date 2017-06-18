@@ -43,7 +43,7 @@ func saveFile(uid int, aid int, file multipart.File, header *multipart.FileHeade
 	}
 
 	resized := imaging.Fill(img, 720, 480, imaging.Center, imaging.Box)
-	thumb := imaging.Fill(img, 250, 250, imaging.Center, imaging.Box)
+	thumb := imaging.Fill(img, 150, 150, imaging.Center, imaging.Box)
 
 	err = imaging.Save(resized, imageFolder+"/"+destinationFileName+".jpg")
 	if err != nil {

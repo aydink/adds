@@ -102,6 +102,7 @@ func registerAddHandlers() {
 	router.GET("/adds/addphoto/:id", HandlePhotoUploadForm)
 	router.POST("/adds/addphoto", HandlePhotoUpload)
 	router.GET("/adds/view/:id", HandleAddsView)
+	router.POST("/adds/messege", HandleMessage)
 
 	router.GET("/adds/new", func(c *gin.Context) {
 		data := c.MustGet("data").(map[string]interface{})

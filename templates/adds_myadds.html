@@ -3,7 +3,7 @@
 
 {{range .adds}}
 <h3><a href="/adds/addphoto/{{.Id}}">{{.Title}}</a></h3>
-<img src="/static/thumb/{{path .Image}}/{{.Image}}.jpg"/>
+{{if .Image }}<img src="/static/thumb/{{path .Image}}/{{.Image}}.jpg"/>{{end}}
 <a href="/adds/edit/{{.Id}}">Düzenle</a>
 <p>{{.Description}}</p>
 {{end}}

@@ -1,12 +1,11 @@
-{{define "body"}}
-
+{{define "body"}} 
 {{with .add}}
 <form class="form-horizontal" method="POST" action="/adds/addphoto" enctype="multipart/form-data">
 
-<div class="form-group">
+  <div class="form-group">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
-      <button type="button" class="btn btn-default">Düzenle</button>
+      <button type="button" class="btn btn-default" id="sorusor">İlan ile ilgili soru sor</button>
       <button type="button" class="btn btn-default">Fotoğraf Ekle</button>
       <button type="button" class="btn btn-default">Yayından Kaldır</button>
       <button type="button" class="btn btn-default">Sil</button>
@@ -19,58 +18,113 @@
       <div style="font-size:35px; color:brown">{{.Title}}"</div>
     </div>
   </div>
- 
+
   <div class="form-group">
     <label class="control-label col-sm-2" for="price">Fiyatı:</label>
     <div class="col-sm-2">
       <div>{{.Price}} TL {{if .Negotiable}} (Pazarlık var){{end}}</div>
-      </div>
     </div>
+  </div>
   </div>
 
 
- <div class="form-group">
+  <div class="form-group">
     <label class="control-label col-sm-2" for="category">İlan kategorisi:</label>
-    <div class="col-sm-4"> 
+    <div class="col-sm-4">
       <div>{{.Category | category}}</div>
     </div>
   </div>
 
- <div class="form-group">
+  <div class="form-group">
     <label class="control-label col-sm-2" for="region">Lojman grubu:</label>
-    <div class="col-sm-4"> 
+    <div class="col-sm-4">
       <div>{{.Region | region}}</div>
     </div>
   </div>
 
- <div class="form-group">
+  <div class="form-group">
     <label class="control-label col-sm-2" for="description">Açıklama:</label>
-    <div class="col-sm-8" style="font-size:16px;"> 
-       {{.Description | newline}}
+    <div class="col-sm-8" style="font-size:16px;">
+      {{.Description | newline}}
     </div>
   </div>
 
-  <div class="form-group"> 
+  <div class="form-group">
     <div class="col-sm-offset-2 col-sm-8">
-      <input type="hidden" name="aid" value="{{.Id}}"/>
+      <input type="hidden" name="aid" value="{{.Id}}" />
     </div>
   </div>
 </form>
 {{end}}
 
 <div class="form-group">
-    <label class="control-label col-sm-2" for="region"></label>
-    <div class="col-sm-8">
+  <label class="control-label col-sm-2" for="region"></label>
+  <div class="col-sm-8">
     {{range .photos}}
-      <img src="/static/thumb/{{path .}}/{{.}}.jpg" width="150px"/>
-    {{end}}
-    </div>
+    <img src="/static/thumb/{{path .}}/{{.}}.jpg" width="150px" /> {{end}}
+  </div>
 </div>
 
-{{end}}
 
-{{define "scripts"}}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h3 class="modal-title">Mesajınız</h3>
+      </div>
+      <div class="modal-body">
+       <textarea class="form-control" rows="5" id="question" name="question"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="questionButton">Gönder</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+{{end}} {{define "scripts"}}
 <script>
+  $(document).ready(function () {
+
+    $("#sorusor").click(function () {
+      $("#myModal").modal('show');
+    });
+
+
+    $("#questionButton").click(function () {
+        //$("#myModal").modal('hide');
+
+        $.ajax({
+          type: 'POST',
+          url: '/adds/messege',
+          data: getPayload(),
+          success: onSuccess,
+          contentType: "application/json",
+          dataType: 'json'
+        });
+
+        //alert($("#question").val());
+    });
+  });
+
+function onSuccess(data) { 
+    if (data.result == "ok") {
+      $("#myModal").modal('hide');
+    } else {
+      alert(data.result); 
+    }
+}
+
+function getPayload() {
+  return JSON.stringify({"aid":{{.add.Id}}, "text":$("#question").val()});
+}
 
 </script>
 
